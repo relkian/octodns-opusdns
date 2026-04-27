@@ -52,6 +52,6 @@ setup(
     packages=find_packages(),
     python_requires='>=3.11',
     tests_require=tests_require,
-    url='https://github.com/octodns/octodns-opusdns',
+    url='https://github.com/relkian/octodns-opusdns',
     version=version(),
 )
