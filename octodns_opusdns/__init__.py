@@ -257,6 +257,14 @@ class OpusDNSProvider(BaseProvider):
         super().__init__(id, *args, **kwargs)
         # Init OpusDNS client.
         self._client = OpusDNSClient(client_id, client_secret, sandbox)
+        # Zone list cache.
+        self._zone_list = []
+
+    def zones(self):
+        if not self._zone_list:
+            self._zone_list = sorted(self._client.zones())
+
+        return self._zone_list
 
     def zone_records(self, zone):
         try:
@@ -267,7 +275,7 @@ class OpusDNSProvider(BaseProvider):
     def list_zones(self):
         self.log.debug('list_zones:')
 
-        return sorted(self._client.zones())
+        return self.zones()
 
     def populate(self, zone, target=False, lenient=False):
         self.log.debug(
@@ -278,7 +286,7 @@ class OpusDNSProvider(BaseProvider):
         )
 
         before = len(zone.records)
-        exists = zone.name in self.list_zones()
+        exists = zone.name in self.zones()
 
         # Create octoDNS Resource Record (Rr()) objects from zone data so we
         # don't have to parse each RR type individually, as OpusDNS API returns
@@ -345,7 +353,7 @@ class OpusDNSProvider(BaseProvider):
             '_apply: zone=%s, len(changes)=%d', zone_name, len(changes)
         )
 
-        if not zone_name in self.list_zones():
+        if not zone_name in self.zones():
             self.log.debug('_apply:   no matching zone, creating domain')
             self._client.zone_create(zone_name)
 
