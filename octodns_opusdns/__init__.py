@@ -13,7 +13,7 @@ class OpusDNSClientException(ProviderException):
     def __init__(self, exception, error=None):
         if exception and error:
             super().__init__(
-                f'{exception}: {error['title']} ({error['detail']}).'
+                f'{exception}: {error['title']} ({error['detail']} "{error['errors']}").'
             )
 
         else:
