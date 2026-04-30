@@ -1,0 +1,7 @@
+{
+  "type": "invalid-organization-credentials",
+  "title": "Authentication Error",
+  "status": 401,
+  "code": "ERROR_INVALID_ORGANIZATION_CREDENTIALS",
+  "detail": "Invalid client secret"
+}

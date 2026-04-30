@@ -1,0 +1,283 @@
+{
+  "results": [
+    {
+      "updated_on": "2026-04-30T08:06:23",
+      "created_on": "2026-04-30T08:06:23",
+      "dnssec_status": "disabled",
+      "name": "unit.tests.",
+      "domain_parts": {
+        "subdomain": "",
+        "domain": "example",
+        "suffix": "net"
+      },
+      "dns_zone_id": "zone_01kqepsdttfc3t79yc79xsta0q",
+      "rrsets": [
+        {
+          "name": "_imaps._tcp.unit.tests.",
+          "type": "SRV",
+          "ttl": 10800,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "10 10 993 imap2.example.net.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "10 5 993 imap.example.net.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "unit.tests.",
+          "type": "ALIAS",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "server.unit.tests.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "unit.tests.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_NS",
+          "records": [
+            {
+              "rdata": "ns1.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "unit.tests.",
+          "type": "SOA",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_SOA",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.com. hostmaster.opusdns.com. 2026043012 10800 3600 604800 300",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "mail.unit.tests.",
+          "type": "MX",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "10 mx1.example.net.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "20 mx2.example.net.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "secure.unit.tests.",
+          "type": "CAA",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "0 issuewild \"letsencrypt.org\"",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "server.unit.tests.",
+          "type": "A",
+          "ttl": 1800,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "10.0.0.1",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "10.0.0.2",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "server.unit.tests.",
+          "type": "AAAA",
+          "ttl": 1800,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "2001::db8:1",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "2001::db8:2",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "server.unit.tests.",
+          "type": "TXT",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "\"v=spf1 ip4:10.0.0.1/32 ip6:2001:db8::1/128 -all\"",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "\"validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezhjklfzehljkfezhkjezfklhzejkehfehuzfehuzefhiuefzhiuefzhuifezhiuefz\"",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "signed.unit.tests.",
+          "type": "DNSKEY",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "256 3 5 AwEAAbLKp5/pZ+5E8nZgxRiUzr1hxV8Y64/63JUqttROZKqkvnAs4kFW7qq6DTWBPW/m0n+CwPjVuwWm8xRMFugRKemOFsgyFICkunqQKWrHVmFnJwBFXDO9n82fXwCK+oU5XTiINKQzCg6pMgIrrVPJPSvuuxaVefxWJT7opwBQZX9v",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1FlbbQRSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0hMsykM QIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQdLfgrWIat",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "www.unit.tests.",
+          "type": "CNAME",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "server.unit.tests.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        }
+      ],
+      "tags": null
+    },
+    {
+      "updated_on": "2026-04-29T05:09:02",
+      "created_on": "2026-04-29T05:09:02",
+      "dnssec_status": "disabled",
+      "name": "10.168.192.in-addr.arpa.",
+      "domain_parts": {
+        "subdomain": "10.168",
+        "domain": "192",
+        "suffix": "in-addr.arpa"
+      },
+      "dns_zone_id": "zone_01kqbt7z4kff38vpy0n1ahx3rm",
+      "rrsets": [
+        {
+          "name": "1.10.168.192.in-addr.arpa.",
+          "type": "PTR",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "ptr1.example.com.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ptr2.example.com.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "10.168.192.in-addr.arpa.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_NS",
+          "records": [
+            {
+              "rdata": "ns1.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "10.168.192.in-addr.arpa.",
+          "type": "SOA",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_SOA",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.com. hostmaster.opusdns.com. 2026042902 10800 3600 604800 300",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        }
+      ],
+      "tags": null
+    }
+  ],
+  "pagination": {
+    "total_pages": 2,
+    "total_items": 4,
+    "current_page": 1,
+    "page_size": 2,
+    "has_next_page": true,
+    "has_previous_page": false
+  }
+}

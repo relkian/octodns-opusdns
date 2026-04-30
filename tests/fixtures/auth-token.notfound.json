@@ -1,0 +1,8 @@
+{
+  "type": "organization-not-found",
+  "title": "Organization Management Error",
+  "status": 404,
+  "code": "ERROR_ORGANIZATION_NOT_FOUND",
+  "organization_id": "organization_01k5vncbhzfte8nbpha2epft9f",
+  "detail": "Organization not found"
+}

@@ -1,0 +1,136 @@
+{
+  "results": [
+    {
+      "updated_on": "2026-03-05T06:04:55",
+      "created_on": "2026-03-05T06:04:55",
+      "dnssec_status": "disabled",
+      "name": "the-quick-brown-fox.fr.",
+      "domain_parts": {
+        "subdomain": "",
+        "domain": "the-quick-brown-fox",
+        "suffix": "fr"
+      },
+      "dns_zone_id": "zone_01kjy9jrypeb5t71bfksc1b5kx",
+      "rrsets": [
+        {
+          "name": "the-quick-brown-fox.fr.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_NS",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.dev.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.opusdns.dev.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "the-quick-brown-fox.fr.",
+          "type": "SOA",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_SOA",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.com. hostmaster.opusdns.com. 2026030501 10800 3600 604800 300",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        }
+      ],
+      "tags": null
+    },
+    {
+      "updated_on": "2026-03-05T06:04:55",
+      "created_on": "2026-03-05T06:04:55",
+      "dnssec_status": "disabled",
+      "name": "the-quick-brown-fox.re.",
+      "domain_parts": {
+        "subdomain": "",
+        "domain": "the-quick-brown-fox",
+        "suffix": "re"
+      },
+      "dns_zone_id": "zone_01kjy9js1yet7a79n58eygqczs",
+      "rrsets": [
+        {
+          "name": "the-quick-brown-fox.re.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_NS",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.dev.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.opusdns.dev.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "the-quick-brown-fox.re.",
+          "type": "SOA",
+          "ttl": 3600,
+          "protected": true,
+          "protected_reason": "SYSTEM_MANAGED_SOA",
+          "records": [
+            {
+              "rdata": "ns1.opusdns.com. hostmaster.opusdns.com. 2026042904 10800 3600 604800 300",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "www.the-quick-brown-fox.re.",
+          "type": "A",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "10.0.0.1",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "www.the-quick-brown-fox.re.",
+          "type": "AAAA",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "::1",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        }
+      ],
+      "tags": null
+    }
+  ],
+  "pagination": {
+    "total_pages": 2,
+    "total_items": 4,
+    "current_page": 2,
+    "page_size": 2,
+    "has_next_page": false,
+    "has_previous_page": true
+  }
+}

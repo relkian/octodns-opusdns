@@ -20,7 +20,7 @@ def version():
 
 description, long_description = descriptions()
 
-tests_require = ('pytest', 'pytest-cov', 'pytest-network')
+tests_require = ('pytest', 'pytest-cov', 'pytest-network', 'requests-mock')
 
 setup(
     author='Jonathan Leroy',
