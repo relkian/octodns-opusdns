@@ -77,7 +77,7 @@ class OpusDNSClient(object):
 
     def _request(self, method, path, params=None, json=None):
         # No access token saved or saved token has expired, refreshing it.
-        if not self._token_expires or self._token_expires >= datetime.now(
+        if not self._token_expires or self._token_expires <= datetime.now(
             timezone.utc
         ):
             self._login()
