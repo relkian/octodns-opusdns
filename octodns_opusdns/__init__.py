@@ -191,60 +191,9 @@ class OpusDNSClient(object):
 
     def zone_create(self, zone_name):
         r = self._request('POST', '/dns', json={'name': zone_name}).json()
+        self._zones[r['zone_name']] = []
 
-        zone_name = r['zone_name']
-
-        # Update zone cache with OpusDNS default zone records.
-        #
-        # This endpoint's JSON response is totally different from the one
-        # called by _cache_zones(), so we can't reuse its parsing algorithm.
-        records = []
-        for change in r['changes']:
-            # We only handle record creations and skip other events like
-            # "create_zone" or "enable_dnssec".
-            if not change['action'] == 'create_record':
-                continue
-
-            rrset_name = change['rrset_name']
-
-            # "domain.tld." => "".
-            if rrset_name == zone_name:
-                rrset_name = ''
-
-            # "www.domain.tld." => "www".
-            rrset_name = rrset_name.removesuffix(f'.{zone_name}')
-            rrset_type = change['rrset_type']
-            rrset_data = change['record_data']
-
-            # Search for an existing record with the same name/type values and
-            # returns its index if present.
-            rindex = next(
-                (
-                    i
-                    for i, v in enumerate(records)
-                    if v['name'] == rrset_name and v['type'] == rrset_type
-                ),
-                None,
-            )
-            # If an identical record has been found, just add this record value
-            # to it.
-            if rindex:
-                records[rindex]['values'].append(rrset_data)
-
-            # Otherwise, just add a new record to the cache.
-            else:
-                records.append(
-                    {
-                        'name': rrset_name,
-                        'type': rrset_type,
-                        'ttl': change['ttl'],
-                        'values': [rrset_data],
-                    }
-                )
-
-        self._zones[zone_name] = records
-
-        return r
+        return True
 
     def _record_patch(self, zone_name, operation, record_data):
         operations = {'ops': [{'op': operation, 'record': record_data}]}
