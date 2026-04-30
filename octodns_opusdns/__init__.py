@@ -309,3 +309,45 @@ class OpusDNSProvider(BaseProvider):
         )
 
         return exists
+
+    def _apply_create(self, change):
+        values = getattr(change.new, 'values', None)
+        if not values:
+            values = [change.new.value]
+
+        rrset_data = {
+            'name': change.new.name,
+            'records': [{'rdata': v.rdata_text} for v in values],
+            'ttl': change.new.ttl,
+            'type': change.new._type,
+        }
+        self._client.rrset_upsert(change.new.zone.name, rrset_data)
+
+    _apply_update = _apply_create
+
+    def _apply_delete(self, change):
+        self._client.rrset_remove(
+            change.existing.zone.name,
+            {
+                'name': change.existing.name,
+                'records': [],
+                'ttl': change.existing.ttl,
+                'type': change.existing._type,
+            },
+        )
+
+    def _apply(self, plan):
+        changes = plan.changes
+        zone_name = plan.desired.name
+
+        self.log.debug(
+            '_apply: zone=%s, len(changes)=%d', zone_name, len(changes)
+        )
+
+        if not zone_name in self.list_zones():
+            self.log.debug('_apply:   no matching zone, creating domain')
+            self._client.zone_create(zone_name)
+
+        for change in changes:
+            class_name = change.__class__.__name__
+            getattr(self, f'_apply_{class_name.lower()}')(change)

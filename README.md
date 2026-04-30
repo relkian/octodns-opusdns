@@ -37,7 +37,10 @@ octodns-opusdns==1.0.0
 providers:
   opusdns:
     class: octodns_opusdns.OpusDNSProvider
-    # TODO
+    client_id: env/OPUSDNS_CLIENT_ID
+    client_secret: env/OPUSDNS_CLIENT_SECRET
+    # Remove the line below to use the production environment.
+    sandbox: true
 ```
 
 ### Support Information
