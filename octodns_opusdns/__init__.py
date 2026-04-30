@@ -156,10 +156,13 @@ class OpusDNSClient(object):
                     if rrset_name == zone_name:
                         rrset_name = ''
 
+                    # "www.domain.tld." => "www".
+                    else:
+                        rrset_name.removesuffix(f'.{zone_name}'),
+
                     for v in rrset['records']:
                         record = {
-                            # "www.domain.tld." => "www".
-                            'name': rrset_name.removesuffix(f'.{zone_name}'),
+                            'name': rrset_name,
                             'type': rrset['type'],
                             'ttl': rrset['ttl'],
                             'value': v['rdata'],
