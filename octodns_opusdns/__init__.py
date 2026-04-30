@@ -195,17 +195,17 @@ class OpusDNSClient(object):
 
         return True
 
-    def _record_patch(self, zone_name, operation, record_data):
-        operations = {'ops': [{'op': operation, 'record': record_data}]}
-        self._request('PATCH', f'/dns/{zone_name}/records', json=operations)
+    def _rrset_patch(self, zone_name, operation, rrset_data):
+        operations = {'ops': [{'op': operation, 'rrset': rrset_data}]}
+        self._request('PATCH', f'/dns/{zone_name}/rrsets', json=operations)
 
         return True
 
-    def record_create(self, zone_name, record_data):
-        return self._record_patch(zone_name, 'upsert', record_data)
+    def rrset_upsert(self, zone_name, rrset_data):
+        return self._rrset_patch(zone_name, 'upsert', rrset_data)
 
-    def record_delete(self, zone_name, record_data):
-        return self._record_patch(zone_name, 'remove', record_data)
+    def rrset_remove(self, zone_name, rrset_data):
+        return self._rrset_patch(zone_name, 'remove', rrset_data)
 
 
 class OpusDNSProvider(BaseProvider):
