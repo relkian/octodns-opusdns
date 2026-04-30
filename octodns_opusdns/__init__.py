@@ -329,15 +329,13 @@ class OpusDNSProvider(BaseProvider):
     _apply_update = _apply_create
 
     def _apply_delete(self, change):
-        self._client.rrset_remove(
-            change.existing.zone.name,
-            {
-                'name': change.existing.name,
-                'records': [],
-                'ttl': change.existing.ttl,
-                'type': change.existing._type,
-            },
-        )
+        rrset_data = {
+            'name': change.existing.name,
+            'records': [],
+            'ttl': change.existing.ttl,
+            'type': change.existing._type,
+        }
+        self._client.rrset_remove(change.existing.zone.name, rrset_data)
 
     def _apply(self, plan):
         changes = plan.changes
