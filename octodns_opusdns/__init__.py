@@ -14,9 +14,18 @@ __version__ = '1.0.0'
 class OpusDNSClientException(ProviderException):
     def __init__(self, exception, error=None):
         if exception and error:
-            super().__init__(
-                f'{exception}: {error['title']} ({error['detail']} "{error['errors']}").'
-            )
+            # If an additional error messages is present in JSON response, we
+            # display it.
+            if 'errors' in error:
+                message = (
+                    f'{exception}: {error['title']} ({error['detail']}'
+                    f' "{error['errors']}").'
+                )
+
+            else:
+                message = f'{exception}: {error['title']} ({error['detail']}).'
+
+            super().__init__(message)
 
         else:
             super().__init__(exception)
@@ -35,6 +44,11 @@ class OpusDNSClientBadRequest(OpusDNSClientException):
 class OpusDNSClientUnauthorized(OpusDNSClientException):
     def __init__(self, error):
         super().__init__('Unauthorized', error)
+
+
+class OpusDNSClientValidationError(OpusDNSClientException):
+    def __init__(self, error):
+        super().__init__('Validation Error', error)
 
 
 class OpusDNSClient(object):
@@ -80,8 +94,8 @@ class OpusDNSClient(object):
         if r.status_code == 401:
             raise OpusDNSClientUnauthorized(r.json())
 
-        if r.status_code == 404:
-            raise OpusDNSClientNotFound()
+        if r.status_code == 422:
+            raise OpusDNSClientValidationError(r.json())
 
         r.raise_for_status()
 
