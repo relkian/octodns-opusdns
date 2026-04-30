@@ -136,7 +136,8 @@ class OpusDNSClient(object):
         self._session.headers.update(
             {
                 # Bearer XXXXXXX...
-                'Authorization': f'{token['token_type']} {token['access_token']}'
+                'Authorization': f'{token['token_type']}'
+                f' {token['access_token']}'
             }
         )
 
@@ -192,8 +193,8 @@ class OpusDNSClient(object):
             # Increment page number.
             page += 1
 
-    def zones(self, cache=True):
-        if not self._zones or not cache:
+    def zones(self):
+        if not self._zones:
             self._cache_zones()
 
         return list(self._zones)
