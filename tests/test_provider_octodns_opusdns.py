@@ -5,6 +5,7 @@ from unittest.mock import Mock, call
 import requests_mock
 
 from octodns.provider.yaml import YamlProvider
+from octodns.record import Record
 from octodns.zone import Zone
 
 from octodns_opusdns import (
@@ -66,7 +67,8 @@ class TestOpusDNSProvider(TestCase):
                 'errors': {
                     'alias_conflicts': {
                         'example.net.': [
-                            'ALIAS records cannot be used in DNSSEC-enabled zones (PowerDNS restriction)'
+                            'ALIAS records cannot be used in DNSSEC-enabled'
+                            ' zones (PowerDNS restriction)'
                         ]
                     }
                 },
@@ -149,13 +151,13 @@ class TestOpusDNSProvider(TestCase):
 
         records = [
             {
-                'name': '_imaps._tcp.unit.tests.',
+                'name': '_imaps._tcp',
                 'ttl': 10800,
                 'type': 'SRV',
                 'value': '10 10 993 imap2.example.net.',
             },
             {
-                'name': '_imaps._tcp.unit.tests.',
+                'name': '_imaps._tcp',
                 'ttl': 10800,
                 'type': 'SRV',
                 'value': '10 5 993 imap.example.net.',
@@ -186,55 +188,45 @@ class TestOpusDNSProvider(TestCase):
                 ' 10800 3600 604800 300',
             },
             {
-                'name': 'mail.unit.tests.',
+                'name': 'mail',
                 'ttl': 3600,
                 'type': 'MX',
                 'value': '10 mx1.example.net.',
             },
             {
-                'name': 'mail.unit.tests.',
+                'name': 'mail',
                 'ttl': 3600,
                 'type': 'MX',
                 'value': '20 mx2.example.net.',
             },
             {
-                'name': 'secure.unit.tests.',
+                'name': 'secure',
                 'ttl': 3600,
                 'type': 'CAA',
                 'value': '0 issuewild "letsencrypt.org"',
             },
+            {'name': 'server', 'ttl': 1800, 'type': 'A', 'value': '10.0.0.1'},
+            {'name': 'server', 'ttl': 1800, 'type': 'A', 'value': '10.0.0.2'},
             {
-                'name': 'server.unit.tests.',
-                'ttl': 1800,
-                'type': 'A',
-                'value': '10.0.0.1',
-            },
-            {
-                'name': 'server.unit.tests.',
-                'ttl': 1800,
-                'type': 'A',
-                'value': '10.0.0.2',
-            },
-            {
-                'name': 'server.unit.tests.',
+                'name': 'server',
                 'ttl': 1800,
                 'type': 'AAAA',
                 'value': '2001::db8:1',
             },
             {
-                'name': 'server.unit.tests.',
+                'name': 'server',
                 'ttl': 1800,
                 'type': 'AAAA',
                 'value': '2001::db8:2',
             },
             {
-                'name': 'server.unit.tests.',
+                'name': 'server',
                 'ttl': 3600,
                 'type': 'TXT',
                 'value': '"v=spf1 ip4:10.0.0.1/32 ip6:2001:db8::1/128 -all"',
             },
             {
-                'name': 'server.unit.tests.',
+                'name': 'server',
                 'ttl': 3600,
                 'type': 'TXT',
                 'value': '"validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezh'
@@ -242,7 +234,7 @@ class TestOpusDNSProvider(TestCase):
                 'fz"',
             },
             {
-                'name': 'signed.unit.tests.',
+                'name': 'signed',
                 'type': 'DNSKEY',
                 'ttl': 3600,
                 'value': '256 3 5 AwEAAbLKp5/pZ+5E8nZgxRiUzr1hxV8Y64/63JUqttROZ'
@@ -251,7 +243,7 @@ class TestOpusDNSProvider(TestCase):
                 'wBQZX9v',
             },
             {
-                'name': 'signed.unit.tests.',
+                'name': 'signed',
                 'type': 'DNSKEY',
                 'ttl': 3600,
                 'value': '256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1'
@@ -260,7 +252,7 @@ class TestOpusDNSProvider(TestCase):
                 'LfgrWIat',
             },
             {
-                'name': 'www.unit.tests.',
+                'name': 'www',
                 'ttl': 3600,
                 'type': 'CNAME',
                 'value': 'server.unit.tests.',
@@ -350,12 +342,14 @@ class TestOpusDNSProvider(TestCase):
         )
 
     def test_apply(self):
-        provider = OpusDNSProvider('test', 'client_id', 'client_secret')
+        provider = OpusDNSProvider(
+            'test', 'client_id', 'client_secret', root_ns_warnings=False
+        )
         resp = Mock()
         resp.json = Mock()
         provider._client._request = Mock(return_value=resp)
 
-        #
+        # GET /dns.
         zones_list = {
             'results': [{'name': 'example.net.', 'rrsets': []}],
             'pagination': {'has_next_page': False},
@@ -382,7 +376,7 @@ class TestOpusDNSProvider(TestCase):
                 call('GET', '/dns', params={'page': 1, 'page_size': 100}),
                 # Created "unit.tests." zone.
                 call('POST', '/dns', json={'name': 'unit.tests.'}),
-                # Created zones DNS records.
+                # Created DNS records.
                 call(
                     'PATCH',
                     '/dns/unit.tests./rrsets',
@@ -434,7 +428,8 @@ class TestOpusDNSProvider(TestCase):
                                     'records': [
                                         {'rdata': '10 5 993 imap.example.net.'},
                                         {
-                                            'rdata': '10 10 993 imap2.example.net.'
+                                            'rdata': '10 10 993'
+                                            ' imap2.example.net.'
                                         },
                                     ],
                                     'ttl': 10800,
@@ -534,10 +529,15 @@ class TestOpusDNSProvider(TestCase):
                                     'name': 'server',
                                     'records': [
                                         {
-                                            'rdata': 'v=spf1 ip4:10.0.0.1/32 ip4:10.0.0.2/32 ip6:2001:db8::1/128 -all'
+                                            'rdata': 'v=spf1 ip4:10.0.0.1/32'
+                                            ' ip4:10.0.0.2/32'
+                                            ' ip6:2001:db8::1/128 -all'
                                         },
                                         {
-                                            'rdata': 'validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezhjklfzehljkfezhkjezfklhzejkehfehuzfehuzefhiuefzhiuefzhuifezhiuefz'
+                                            'rdata': 'validation=fjkfzejhfezkhf'
+                                            'zelhkjhjklezfhjlkefzlhjfezhjklfzeh'
+                                            'ljkfezhkjezfklhzejkehfehuzfehuzefh'
+                                            'iuefzhiuefzhuifezhiuefz'
                                         },
                                     ],
                                     'ttl': 3600,
@@ -570,3 +570,168 @@ class TestOpusDNSProvider(TestCase):
         )
 
         self.assertEqual(11, provider._client._request.call_count)
+
+        provider._client._request.reset_mock()
+
+        # Clear provider zones cache.
+        provider._zone_list = []
+        # Fake zones/records cache generated by provider._client._cache_zones().
+        provider._client._zones = {
+            'unit.tests.': [
+                {
+                    'name': '',
+                    'ttl': 3600,
+                    'type': 'NS',
+                    'value': 'ns1.sandbox.opusdns.com.',
+                },
+                {
+                    'name': '',
+                    'ttl': 3600,
+                    'type': 'NS',
+                    'value': 'ns2.sandbox.opusdns.com.',
+                },
+                {
+                    'name': '',
+                    'ttl': 3600,
+                    'type': 'SOA',
+                    'value': 'ns1.opusdns.com. hostmaster.opusdns.com.'
+                    ' 2026043012 10800 3600 604800 300',
+                },
+                {
+                    'name': 'hop',
+                    'ttl': 1800,
+                    'type': 'AAAA',
+                    'value': '2001::db8:1',
+                },
+                {
+                    'name': 'mail',
+                    'ttl': 3600,
+                    'type': 'MX',
+                    'value': '10 mx1.example.net.',
+                },
+                {
+                    'name': 'mail',
+                    'ttl': 3600,
+                    'type': 'MX',
+                    'value': '20 mx2.example.net.',
+                },
+                {
+                    'name': 'secure',
+                    'ttl': 3600,
+                    'type': 'CAA',
+                    'value': '0 issuewild "letsencrypt.org"',
+                },
+            ]
+        }
+
+        # resp.json.side_effect = ['{}']
+
+        wanted = Zone('unit.tests.', [])
+        # Create a new A record.
+        wanted.add_record(
+            Record.new(
+                wanted, 'hop', {'ttl': 300, 'type': 'A', 'value': '127.0.0.22'}
+            )
+        )
+        # Update existing AAAA record.
+        wanted.add_record(
+            Record.new(
+                wanted,
+                'hop',
+                {'ttl': 300, 'type': 'AAAA', 'value': '2001:db8::2'},
+            )
+        )
+
+        # - Ignore unsupported SOA record
+        # - Ignore APEX NS as they aren't provided in wanted zone
+        # - Delete existing MX and CAA records
+        # - Create a new A record
+        # - Update existing AAAA record (TTL and value)
+        #
+        # Total: 4 changes (1 creation, + 1 update + 2 deletions).
+        plan = provider.plan(wanted)
+        self.assertTrue(plan.exists)
+        self.assertEqual(4, len(plan.changes))
+        self.assertEqual(4, provider.apply(plan))
+
+        provider._client._request.assert_has_calls(
+            [
+                # Delete MX records:
+                # - mail 3600 IN MX mx1.example.net.
+                # - mail 3600 IN MX mx2.example.net.
+                call(
+                    'PATCH',
+                    '/dns/unit.tests./rrsets',
+                    json={
+                        'ops': [
+                            {
+                                'op': 'remove',
+                                'rrset': {
+                                    'name': 'mail',
+                                    'records': [],
+                                    'ttl': 3600,
+                                    'type': 'MX',
+                                },
+                            }
+                        ]
+                    },
+                ),
+                # Delete CAA record:
+                # - secure 3600 IN CAA 0 issuewild "letsencrypt.org"
+                call(
+                    'PATCH',
+                    '/dns/unit.tests./rrsets',
+                    json={
+                        'ops': [
+                            {
+                                'op': 'remove',
+                                'rrset': {
+                                    'name': 'secure',
+                                    'records': [],
+                                    'ttl': 3600,
+                                    'type': 'CAA',
+                                },
+                            }
+                        ]
+                    },
+                ),
+                # Add A record:
+                # - hop 300 IN A 127.0.0.22
+                call(
+                    'PATCH',
+                    '/dns/unit.tests./rrsets',
+                    json={
+                        'ops': [
+                            {
+                                'op': 'upsert',
+                                'rrset': {
+                                    'name': 'hop',
+                                    'records': [{'rdata': '127.0.0.22'}],
+                                    'ttl': 300,
+                                    'type': 'A',
+                                },
+                            }
+                        ]
+                    },
+                ),
+                # Update existing AAAA record:
+                # - hop 300 AAAA 2001:db8::2
+                call(
+                    'PATCH',
+                    '/dns/unit.tests./rrsets',
+                    json={
+                        'ops': [
+                            {
+                                'op': 'upsert',
+                                'rrset': {
+                                    'name': 'hop',
+                                    'records': [{'rdata': '2001:db8::2'}],
+                                    'ttl': 300,
+                                    'type': 'AAAA',
+                                },
+                            }
+                        ]
+                    },
+                ),
+            ]
+        )
