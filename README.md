@@ -27,8 +27,8 @@ octodns-opusdns==1.0.0
 
 ```
 # Start with the latest/specific versions and don't just copy what's here
--e git+https://git@github.com/octodns/octodns.git@58e4cc33cd6fdbe2ba5d2b7edab79afaac8d6f1a#egg=octodns
--e git+https://git@github.com/octodns/octodns-opusdns.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg=octodns_opusdns
+-e git+https://git@github.com/octodns/octodns.git@dc75b60b0dbb4b627422588efe2473522dd1f797#egg=octodns
+-e git+https://git@github.com/octodns/octodns-opusdns.git@f76930cceaa1c0399ac123fa1bdd565a09e19a0d#egg=octodns_opusdns
 ```
 
 ### Configuration
@@ -54,7 +54,15 @@ records.
 It does not supports `CERT`, `DNSKEY`, `SOA` and `SMIMEA` records as octoDNS
 doesn't handle them.
 
-Other records types are not supported by OpusDNS API.
+`URI` records support requires octoDNS >= `1.17.0` (unrelased, current Git
+trunk).
+
+> [!NOTE]
+> Currently, the creation and editing of `DS`, `HTTPS`, `NAPTR`, `SSHFP`,
+> `SVCB`, `TLSA` and `URI` records isn't implemented in OpusDNS zones
+> management interface.
+> This means that records of these types can be viewed and deleted but not
+> created or edited through it.
 
 #### Dynamic
 
