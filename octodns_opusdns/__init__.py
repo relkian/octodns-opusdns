@@ -18,12 +18,13 @@ class OpusDNSClientException(ProviderException):
             # display it.
             if 'errors' in error:
                 message = (
-                    f'{exception}: {error['title']} ({error['detail']}'
-                    f' "{error['errors']}").'
+                    # Quotes reuse in f-strings require Python >= 3.12.
+                    f'{exception}: {error["title"]} ({error["detail"]}'
+                    f' \"{error["errors"]}\").'
                 )
 
             else:
-                message = f'{exception}: {error['title']} ({error['detail']}).'
+                message = f'{exception}: {error["title"]} ({error["detail"]}).'
 
             super().__init__(message)
 
@@ -136,8 +137,8 @@ class OpusDNSClient(object):
         self._session.headers.update(
             {
                 # Bearer XXXXXXX...
-                'Authorization': f'{token['token_type']}'
-                f' {token['access_token']}'
+                'Authorization': f'{token["token_type"]}'
+                f' {token["access_token"]}'
             }
         )
 
