@@ -47,7 +47,7 @@ providers:
 
 #### Records
 
-This provider supports `A`, `AAAA`, `ALIAS`, `CAA`, `CNAME`, `DS`, `HTTPS`,
+This provider supports `A`, `AAAA`, `ALIAS`, `CAA`, `CNAME`, `HTTPS`,
 `MX`, `NAPTR`, `NS`, `PTR`, `SRV`, `SSHFP`, `SVCB`, `TLSA`, `TXT` and `URI`
 records.
 
@@ -58,7 +58,7 @@ doesn't handle them.
 trunk).
 
 > [!NOTE]
-> Currently, the creation and editing of `DS`, `HTTPS`, `NAPTR`, `SSHFP`,
+> Currently, the creation and editing of `HTTPS`, `NAPTR`, `SSHFP`,
 > `SVCB`, `TLSA` and `URI` records isn't implemented in OpusDNS zones
 > management interface.
 > This means that records of these types can be viewed and deleted but not

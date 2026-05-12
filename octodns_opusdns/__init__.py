@@ -237,7 +237,6 @@ class OpusDNSProvider(BaseProvider):
             'ALIAS',
             'CAA',
             'CNAME',
-            'DS',
             'HTTPS',
             'MX',
             'NAPTR',
