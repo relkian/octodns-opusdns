@@ -8,7 +8,7 @@ from octodns.provider import ProviderException
 from octodns.provider.base import BaseProvider
 from octodns.record import Record, Rr
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class OpusDNSClientException(ProviderException):
