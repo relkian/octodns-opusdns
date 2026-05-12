@@ -373,5 +373,5 @@ class OpusDNSProvider(BaseProvider):
             self._client.zone_create(zone_name)
 
         for change in changes:
-            class_name = change.__class__.__name__
-            getattr(self, f'_apply_{class_name.lower()}')(change)
+            action = change.__class__.__name__
+            getattr(self, f'_apply_{action.lower()}')(change)
