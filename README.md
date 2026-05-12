@@ -54,8 +54,8 @@ records.
 It does not supports `CERT`, `DNSKEY`, `SOA` and `SMIMEA` records as octoDNS
 doesn't handle them.
 
-`URI` records support requires octoDNS >= `1.17.0` (unrelased, current Git
-trunk).
+> [!IMPORTANT]
+> `URI` records support requires octoDNS >= `1.17.0`.
 
 > [!NOTE]
 > Currently, the creation and editing of `HTTPS`, `NAPTR`, `SSHFP`,
