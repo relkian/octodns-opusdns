@@ -319,8 +319,17 @@ class OpusDNSProvider(BaseProvider):
 
                 continue
 
+            record_value = record['value']
+
+            # Special handling of TXT records values.
+            if record_type == 'TXT':
+                # Double quotes must be unescaped.
+                #    "Value with a \" quote"
+                # => "Value with a " quote"
+                record_value = record_value.replace('\\"', '"')
+
             rrs.append(
-                Rr(record['name'], record_type, record['ttl'], record['value'])
+                Rr(record['name'], record_type, record['ttl'], record_value)
             )
 
         # Record.from_rrs() converts Rr() objects to octoDNS records
@@ -341,9 +350,28 @@ class OpusDNSProvider(BaseProvider):
         if not values:
             values = [change.new.value]
 
+        rdata = []
+        for value in values:
+            # Special handling of TXT records values.
+            if change.new._type == 'TXT':
+                # Semicolons must not be escaped.
+                #    "v=DMARC1\; p=quarantine\; ..."
+                # => "v=DMARC1; p=quarantine; ..."
+                v = value.rdata_text.replace('\\;', ';')
+                # Double quotes must be escaped.
+                #    "Value with a " quote"
+                # => "Value with a \" quote"
+                v = v.replace('"', '\\"')
+
+                rdata.append({'rdata': v})
+
+            # All other records types requires no specific treatment.
+            else:
+                rdata.append({'rdata': value.rdata_text})
+
         rrset_data = {
             'name': change.new.name,
-            'records': [{'rdata': v.rdata_text} for v in values],
+            'records': rdata,
             'ttl': change.new.ttl,
             'type': change.new._type,
         }
