@@ -14,8 +14,8 @@ __version__ = '1.0.1'
 class OpusDNSClientException(ProviderException):
     def __init__(self, exception, error=None):
         if exception and error:
-            # If an additional error messages is present in JSON response, we
-            # display it.
+            # If additional error messages are presents in JSON response, we
+            # display them.
             if 'errors' in error:
                 message = (
                     # Quotes reuse in f-strings require Python >= 3.12.
@@ -397,7 +397,7 @@ class OpusDNSProvider(BaseProvider):
         )
 
         if not zone_name in self.zones():
-            self.log.debug('_apply:   no matching zone, creating domain')
+            self.log.debug('_apply:   no matching zone, creating...')
             self._client.zone_create(zone_name)
 
         for change in changes:
