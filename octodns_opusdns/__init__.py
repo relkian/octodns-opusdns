@@ -308,15 +308,20 @@ class OpusDNSProvider(BaseProvider):
         # raw RR values.
         rrs = []
         for record in self.zone_records(zone):
+            record_name = record['name']
             record_type = record['type']
 
             if not record_type in self.SUPPORTS:
-                # Don't print this warning for SOA records.
-                if not record_type == 'SOA':
-                    self.log.warning(
-                        'populate: skipping unsupported %s record', record_type
-                    )
+                # Don't log this warning for APEX DNSKEY, DS and SOA records.
+                # SOA records aren't supported by OctoDNS. APEX DNSKEY and DS
+                # records are managed by OpusDNS and can't be updated/removed on
+                # DNSSEC-signed zones.
+                if record_name == '' and record_type in ('DNSKEY', 'DS', 'SOA'):
+                    continue
 
+                self.log.warning(
+                    'populate: skipping unsupported %s record', record_type
+                )
                 continue
 
             record_value = record['value']
@@ -329,7 +334,7 @@ class OpusDNSProvider(BaseProvider):
                 record_value = record_value.replace('\\"', '"')
 
             rrs.append(
-                Rr(record['name'], record_type, record['ttl'], record_value)
+                Rr(record_name, record_type, record['ttl'], record_value)
             )
 
         # Record.from_rrs() converts Rr() objects to octoDNS records
