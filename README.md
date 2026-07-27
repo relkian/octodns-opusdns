@@ -19,16 +19,16 @@ Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
 
 ```
 # Start with the latest versions and don't just copy what's here
-octodns==1.16.0
-octodns-opusdns==1.0.0
+octodns==1.21.0
+octodns-opusdns==1.1.0
 ```
 
 ##### SHAs
 
 ```
 # Start with the latest/specific versions and don't just copy what's here
--e git+https://git@github.com/octodns/octodns.git@dc75b60b0dbb4b627422588efe2473522dd1f797#egg=octodns
--e git+https://git@github.com/octodns/octodns-opusdns.git@f76930cceaa1c0399ac123fa1bdd565a09e19a0d#egg=octodns_opusdns
+-e git+https://git@github.com/octodns/octodns.git@5d2a85e43953d5a02e9b67e83f30e2bd9c7ef441#egg=octodns
+-e git+https://git@github.com/octodns/octodns-opusdns.git@2952eec544460d8af0e0f4a8a16f7baf36be87ea#egg=octodns_opusdns
 ```
 
 ### Configuration
