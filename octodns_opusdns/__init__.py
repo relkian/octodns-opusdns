@@ -6,7 +6,7 @@ from requests import Session
 from octodns import __version__ as octodns_version
 from octodns.provider import ProviderException
 from octodns.provider.base import BaseProvider
-from octodns.record import Record, Rr
+from octodns.record import Record, Rrset
 
 __version__ = '1.1.0'
 
@@ -166,24 +166,13 @@ class OpusDNSClient(object):
                 records = []
 
                 for rrset in zone['rrsets']:
-                    rrset_name = rrset['name']
-
-                    # "domain.tld." => "".
-                    if rrset_name == zone_name:
-                        rrset_name = ''
-
-                    # "www.domain.tld." => "www".
-                    else:
-                        rrset_name = rrset_name.removesuffix(f'.{zone_name}')
-
-                    for v in rrset['records']:
-                        record = {
-                            'name': rrset_name,
-                            'type': rrset['type'],
-                            'ttl': rrset['ttl'],
-                            'value': v['rdata'],
-                        }
-                        records.append(record)
+                    record = {
+                        'name': rrset['name'],
+                        'ttl': rrset['ttl'],
+                        'type': rrset['type'],
+                        'values': [v['rdata'] for v in rrset['records']],
+                    }
+                    records.append(record)
 
                 self._zones[zone_name] = records
 
@@ -293,20 +282,21 @@ class OpusDNSProvider(BaseProvider):
         return self.zones()
 
     def populate(self, zone, target=False, lenient=False):
+        zone_name = zone.name
+
         self.log.debug(
             'populate: name=%s, target=%s, lenient=%s',
-            zone.name,
+            zone_name,
             target,
             lenient,
         )
 
         before = len(zone.records)
-        exists = zone.name in self.zones()
+        exists = zone_name in self.zones()
 
-        # Create octoDNS Resource Record (Rr()) objects from zone data so we
-        # don't have to parse each RR type individually, as OpusDNS API returns
-        # raw RR values.
-        rrs = []
+        # OpusDNS API returns raw RR values, so we create octoDNS resource
+        # record set (Rrset()) objects using them.
+        rrsets = []
         for record in self.zone_records(zone):
             record_name = record['name']
             record_type = record['type']
@@ -316,7 +306,11 @@ class OpusDNSProvider(BaseProvider):
                 # SOA records aren't supported by OctoDNS. APEX DNSKEY and DS
                 # records are managed by OpusDNS and can't be updated/removed on
                 # DNSSEC-signed zones.
-                if record_name == '' and record_type in ('DNSKEY', 'DS', 'SOA'):
+                if record_name == zone_name and record_type in (
+                    'DNSKEY',
+                    'DS',
+                    'SOA',
+                ):
                     continue
 
                 self.log.warning(
@@ -324,22 +318,13 @@ class OpusDNSProvider(BaseProvider):
                 )
                 continue
 
-            record_value = record['value']
-
-            # Special handling of TXT records values.
-            if record_type == 'TXT':
-                # Double quotes must be unescaped.
-                #    "Value with a \" quote"
-                # => "Value with a " quote"
-                record_value = record_value.replace('\\"', '"')
-
-            rrs.append(
-                Rr(record_name, record_type, record['ttl'], record_value)
+            rrsets.append(
+                Rrset(record_name, record_type, record['ttl'], record['values'])
             )
 
-        # Record.from_rrs() converts Rr() objects to octoDNS records
+        # Record.from_rrsets() converts Rrset() objects to octoDNS records
         # (ARecord, AaaaRecord...), parsing RFC-formated records values.
-        for record in Record.from_rrs(zone, rrs, lenient=lenient):
+        for record in Record.from_rrsets(zone, rrsets, lenient=lenient):
             zone.add_record(record, lenient=lenient)
 
         self.log.info(
@@ -355,30 +340,11 @@ class OpusDNSProvider(BaseProvider):
         if not values:
             values = [change.new.value]
 
-        rdata = []
-        for value in values:
-            # Special handling of TXT records values.
-            if change.new._type == 'TXT':
-                # Semicolons must not be escaped.
-                #    "v=DMARC1\; p=quarantine\; ..."
-                # => "v=DMARC1; p=quarantine; ..."
-                v = value.rdata_text.replace('\\;', ';')
-                # Double quotes must be escaped.
-                #    "Value with a " quote"
-                # => "Value with a \" quote"
-                v = v.replace('"', '\\"')
-
-                rdata.append({'rdata': v})
-
-            # All other records types requires no specific treatment.
-            else:
-                rdata.append({'rdata': value.rdata_text})
-
         rrset_data = {
             'name': change.new.name,
-            'records': rdata,
             'ttl': change.new.ttl,
             'type': change.new._type,
+            'records': [{'rdata': v.to_rdata_text()} for v in values],
         }
         self._client.rrset_upsert(change.new.zone.name, rrset_data)
 
@@ -387,9 +353,9 @@ class OpusDNSProvider(BaseProvider):
     def _apply_delete(self, change):
         rrset_data = {
             'name': change.existing.name,
-            'records': [],
             'ttl': change.existing.ttl,
             'type': change.existing._type,
+            'records': [],
         }
         self._client.rrset_remove(change.existing.zone.name, rrset_data)
 

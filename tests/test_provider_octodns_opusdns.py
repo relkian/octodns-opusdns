@@ -153,111 +153,93 @@ class TestOpusDNSProvider(TestCase):
 
         records = [
             {
-                'name': '_imaps._tcp',
+                'name': '_imaps._tcp.unit.tests.',
                 'ttl': 10800,
                 'type': 'SRV',
-                'value': '10 10 993 imap2.example.net.',
+                'values': [
+                    '10 10 993 imap2.example.net.',
+                    '10 5 993 imap.example.net.',
+                ],
             },
             {
-                'name': '_imaps._tcp',
-                'ttl': 10800,
-                'type': 'SRV',
-                'value': '10 5 993 imap.example.net.',
-            },
-            {
-                'name': '',
+                'name': 'unit.tests.',
                 'ttl': 3600,
                 'type': 'ALIAS',
-                'value': 'server.unit.tests.',
+                'values': ['server.unit.tests.'],
             },
             {
-                'name': '',
+                'name': 'unit.tests.',
                 'ttl': 3600,
                 'type': 'NS',
-                'value': 'ns1.sandbox.opusdns.com.',
+                'values': [
+                    'ns1.sandbox.opusdns.com.',
+                    'ns2.sandbox.opusdns.com.',
+                ],
             },
             {
-                'name': '',
-                'ttl': 3600,
-                'type': 'NS',
-                'value': 'ns2.sandbox.opusdns.com.',
-            },
-            {
-                'name': '',
+                'name': 'unit.tests.',
                 'ttl': 3600,
                 'type': 'SOA',
-                'value': 'ns1.opusdns.com. hostmaster.opusdns.com. 2026043012'
-                ' 10800 3600 604800 300',
+                'values': [
+                    'ns1.opusdns.com. hostmaster.opusdns.com. 2026043012'
+                    ' 10800 3600 604800 300'
+                ],
             },
             {
-                'name': 'mail',
+                'name': 'mail.unit.tests.',
                 'ttl': 3600,
                 'type': 'MX',
-                'value': '10 mx1.example.net.',
+                'values': ['10 mx1.example.net.', '20 mx2.example.net.'],
             },
             {
-                'name': 'mail',
-                'ttl': 3600,
-                'type': 'MX',
-                'value': '20 mx2.example.net.',
-            },
-            {
-                'name': 'secure',
+                'name': 'secure.unit.tests.',
                 'ttl': 3600,
                 'type': 'CAA',
-                'value': '0 issuewild "letsencrypt.org"',
+                'values': ['0 issuewild "letsencrypt.org"'],
             },
-            {'name': 'server', 'ttl': 1800, 'type': 'A', 'value': '10.0.0.1'},
-            {'name': 'server', 'ttl': 1800, 'type': 'A', 'value': '10.0.0.2'},
             {
-                'name': 'server',
+                'name': 'server.unit.tests.',
+                'ttl': 1800,
+                'type': 'A',
+                'values': ['10.0.0.1', '10.0.0.2'],
+            },
+            {
+                'name': 'server.unit.tests.',
                 'ttl': 1800,
                 'type': 'AAAA',
-                'value': '2001::db8:1',
+                'values': ['2001::db8:1', '2001::db8:2'],
             },
             {
-                'name': 'server',
-                'ttl': 1800,
-                'type': 'AAAA',
-                'value': '2001::db8:2',
-            },
-            {
-                'name': 'server',
+                'name': 'server.unit.tests.',
                 'ttl': 3600,
                 'type': 'TXT',
-                'value': '"v=spf1 ip4:10.0.0.1/32 ip6:2001:db8::1/128 -all"',
+                'values': [
+                    '"v=spf1 ip4:10.0.0.1/32 ip6:2001:db8::1/128 -all"',
+                    '"validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezhjklfz'
+                    'ehljkfezhkjezfklhzejkehfehuzfehuzefhiuefzhiuefzhuifezhiuef'
+                    'z"',
+                ],
             },
             {
-                'name': 'server',
+                'name': 'signed.unit.tests.',
                 'ttl': 3600,
-                'type': 'TXT',
-                'value': '"validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezh'
-                'jklfzehljkfezhkjezfklhzejkehfehuzfehuzefhiuefzhiuefzhuifezhiue'
-                'fz"',
-            },
-            {
-                'name': 'signed',
                 'type': 'DNSKEY',
-                'ttl': 3600,
-                'value': '256 3 5 AwEAAbLKp5/pZ+5E8nZgxRiUzr1hxV8Y64/63JUqttROZ'
-                'KqkvnAs4kFW7qq6DTWBPW/m0n+CwPjVuwWm8xRMFugRKemOFsgyFICkunqQKWr'
-                'HVmFnJwBFXDO9n82fXwCK+oU5XTiINKQzCg6pMgIrrVPJPSvuuxaVefxWJT7op'
-                'wBQZX9v',
+                'values': [
+                    '256 3 5 AwEAAbLKp5/pZ+5E8nZgxRiUzr1hxV8Y64/63JUqttROZKqkvn'
+                    'As4kFW7qq6DTWBPW/m0n+CwPjVuwWm8xRMFugRKemOFsgyFICkunqQKWrH'
+                    'VmFnJwBFXDO9n82fXwCK+oU5XTiINKQzCg6pMgIrrVPJPSvuuxaVefxWJT'
+                    '7opwBQZX9v',
+                    '256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1FlbbQ'
+                    'RSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0hM'
+                    'sykMQIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rL'
+                    'QdLfgrWIat',
+                ],
             },
             {
-                'name': 'signed',
-                'type': 'DNSKEY',
-                'ttl': 3600,
-                'value': '256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1'
-                'FlbbQRSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0h'
-                'MsykM QIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQd'
-                'LfgrWIat',
-            },
-            {
-                'name': 'www',
+                'name': 'www.unit.tests.',
                 'ttl': 3600,
                 'type': 'CNAME',
-                'value': 'server.unit.tests.',
+                'values': ['server.unit.tests.'],
             },
         ]
         self.assertEqual(provider.zone_records(zone), records)
@@ -333,12 +315,12 @@ class TestOpusDNSProvider(TestCase):
             zone = Zone('unit.tests.', [])
             provider.populate(zone)
 
+        # Two values but for the same DNSKEY record (signed.unit.tests.), so
+        # only one warning must be raised.
         self.assertEqual(
             [
                 'WARNING:OpusDNSProvider[test]:populate: skipping unsupported'
-                ' DNSKEY record',
-                'WARNING:OpusDNSProvider[test]:populate: skipping unsupported'
-                ' DNSKEY record',
+                ' DNSKEY record'
             ],
             logger.output,
         )
@@ -388,11 +370,11 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': '',
+                                    'ttl': 3600,
+                                    'type': 'ALIAS',
                                     'records': [
                                         {'rdata': 'server.unit.tests.'}
                                     ],
-                                    'ttl': 3600,
-                                    'type': 'ALIAS',
                                 },
                             }
                         ]
@@ -407,12 +389,12 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': '',
+                                    'ttl': 3600,
+                                    'type': 'NS',
                                     'records': [
                                         {'rdata': 'ns1.sandbox.opusdns.com.'},
                                         {'rdata': 'ns2.sandbox.opusdns.com.'},
                                     ],
-                                    'ttl': 3600,
-                                    'type': 'NS',
                                 },
                             }
                         ]
@@ -427,6 +409,8 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': '_imaps._tcp',
+                                    'ttl': 10800,
+                                    'type': 'SRV',
                                     'records': [
                                         {'rdata': '10 5 993 imap.example.net.'},
                                         {
@@ -434,8 +418,6 @@ class TestOpusDNSProvider(TestCase):
                                             ' imap2.example.net.'
                                         },
                                     ],
-                                    'ttl': 10800,
-                                    'type': 'SRV',
                                 },
                             }
                         ]
@@ -450,12 +432,12 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'mail',
+                                    'ttl': 3600,
+                                    'type': 'MX',
                                     'records': [
                                         {'rdata': '10 mx1.example.net.'},
                                         {'rdata': '20 mx2.example.net.'},
                                     ],
-                                    'ttl': 3600,
-                                    'type': 'MX',
                                 },
                             }
                         ]
@@ -470,11 +452,13 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'secure',
-                                    'records': [
-                                        {'rdata': '0 issuewild letsencrypt.org'}
-                                    ],
                                     'ttl': 3600,
                                     'type': 'CAA',
+                                    'records': [
+                                        {
+                                            'rdata': '0 issuewild "letsencrypt.org"'
+                                        }
+                                    ],
                                 },
                             }
                         ]
@@ -489,12 +473,12 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'server',
+                                    'ttl': 1800,
+                                    'type': 'A',
                                     'records': [
                                         {'rdata': '10.0.0.1'},
                                         {'rdata': '10.0.0.2'},
                                     ],
-                                    'ttl': 1800,
-                                    'type': 'A',
                                 },
                             }
                         ]
@@ -509,12 +493,12 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'server',
+                                    'ttl': 1800,
+                                    'type': 'AAAA',
                                     'records': [
                                         {'rdata': '2001::db8:1'},
                                         {'rdata': '2001::db8:2'},
                                     ],
-                                    'ttl': 1800,
-                                    'type': 'AAAA',
                                 },
                             }
                         ]
@@ -529,21 +513,21 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'server',
-                                    'records': [
-                                        {
-                                            'rdata': 'v=spf1 ip4:10.0.0.1/32'
-                                            ' ip4:10.0.0.2/32'
-                                            ' ip6:2001:db8::1/128 -all'
-                                        },
-                                        {
-                                            'rdata': 'validation=fjkfzejhfezkhf'
-                                            'zelhkjhjklezfhjlkefzlhjfezhjklfzeh'
-                                            'ljkfezhkjezfklhzejkehfehuzfehuzefh'
-                                            'iuefzhiuefzhuifezhiuefz'
-                                        },
-                                    ],
                                     'ttl': 3600,
                                     'type': 'TXT',
+                                    'records': [
+                                        {
+                                            'rdata': '"v=spf1 ip4:10.0.0.1/32'
+                                            ' ip4:10.0.0.2/32'
+                                            ' ip6:2001:db8::1/128 -all"'
+                                        },
+                                        {
+                                            'rdata': '"validation=fjkfzejhfezkh'
+                                            'fzelhkjhjklezfhjlkefzlhjfezhjklfze'
+                                            'hljkfezhkjezfklhzejkehfehuzfehuzef'
+                                            'hiuefzhiuefzhuifezhiuefz"'
+                                        },
+                                    ],
                                 },
                             }
                         ]
@@ -558,11 +542,11 @@ class TestOpusDNSProvider(TestCase):
                                 'op': 'upsert',
                                 'rrset': {
                                     'name': 'www',
+                                    'ttl': 3600,
+                                    'type': 'CNAME',
                                     'records': [
                                         {'rdata': 'server.unit.tests.'}
                                     ],
-                                    'ttl': 3600,
-                                    'type': 'CNAME',
                                 },
                             }
                         ]
@@ -581,47 +565,40 @@ class TestOpusDNSProvider(TestCase):
         provider._client._zones = {
             'unit.tests.': [
                 {
-                    'name': '',
+                    'name': 'unit.tests.',
                     'ttl': 3600,
                     'type': 'NS',
-                    'value': 'ns1.sandbox.opusdns.com.',
+                    'values': [
+                        'ns1.sandbox.opusdns.com.',
+                        'ns2.sandbox.opusdns.com.',
+                    ],
                 },
                 {
-                    'name': '',
-                    'ttl': 3600,
-                    'type': 'NS',
-                    'value': 'ns2.sandbox.opusdns.com.',
-                },
-                {
-                    'name': '',
+                    'name': 'unit.tests.',
                     'ttl': 3600,
                     'type': 'SOA',
-                    'value': 'ns1.opusdns.com. hostmaster.opusdns.com.'
-                    ' 2026043012 10800 3600 604800 300',
+                    'values': [
+                        'ns1.opusdns.com. hostmaster.opusdns.com.'
+                        ' 2026043012 10800 3600 604800 300'
+                    ],
                 },
                 {
-                    'name': 'hop',
+                    'name': 'hop.unit.tests.',
                     'ttl': 1800,
                     'type': 'AAAA',
-                    'value': '2001::db8:1',
+                    'values': ['2001::db8:1'],
                 },
                 {
-                    'name': 'mail',
+                    'name': 'mail.unit.tests.',
                     'ttl': 3600,
                     'type': 'MX',
-                    'value': '10 mx1.example.net.',
+                    'values': ['10 mx1.example.net.', '20 mx2.example.net.'],
                 },
                 {
-                    'name': 'mail',
-                    'ttl': 3600,
-                    'type': 'MX',
-                    'value': '20 mx2.example.net.',
-                },
-                {
-                    'name': 'secure',
+                    'name': 'secure.unit.tests.',
                     'ttl': 3600,
                     'type': 'CAA',
-                    'value': '0 issuewild "letsencrypt.org"',
+                    'values': ['0 issuewild "letsencrypt.org"'],
                 },
             ]
         }
