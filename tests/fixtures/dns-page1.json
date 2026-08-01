@@ -181,7 +181,26 @@
               "protected_reason": null
             },
             {
-              "rdata": "256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1FlbbQRSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0hMsykM QIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQdLfgrWIat",
+              "rdata": "256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1FlbbQRSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0hMsykMQIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQdLfgrWIat",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
+          "name": "subzone.unit.tests.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "ns1.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.sandbox.opusdns.com.",
               "protected": false,
               "protected_reason": null
             }

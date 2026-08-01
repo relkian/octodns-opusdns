@@ -2,10 +2,7 @@
 '':
   - type: ALIAS
     value: server.unit.tests.
-  - type: NS
-    values:
-      - ns1.sandbox.opusdns.com.
-      - ns2.sandbox.opusdns.com.
+
 _imaps._tcp:
   ttl: 10800
   type: SRV
@@ -18,6 +15,7 @@ _imaps._tcp:
       priority: 10
       target: imap2.example.net.
       weight: 10
+
 mail:
   type: MX
   values:
@@ -25,12 +23,14 @@ mail:
       preference: 10
     - exchange: mx2.example.net.
       preference: 20
+
 secure:
   type: CAA
   value:
     flags: 0
     tag: issuewild
     value: letsencrypt.org
+
 server:
   - ttl: 1800
     type: A
@@ -47,6 +47,13 @@ server:
       - v=spf1 ip4:10.0.0.1/32 ip4:10.0.0.2/32 ip6:2001:db8::1/128 -all
       - "validation=fjkfzejhfezkhfzelhkjhjklezfhjlkefzlhjfezhjklfzehljkfezhkjez\
         fklhzejkehfehuzfehuzefhiuefzhiuefzhuifezhiuefz"
+
+subzone:
+  - type: NS
+    values:
+      - ns1.sandbox.opusdns.com.
+      - ns2.sandbox.opusdns.com.
+
 www:
   type: CNAME
   value: server.unit.tests.

@@ -254,8 +254,6 @@ class OpusDNSProvider(BaseProvider):
     SUPPORTS_GEO = False
     # The same PTR record can return multiple values.
     SUPPORTS_MULTIVALUE_PTR = True
-    # Zone APEX NS records can be customized.
-    SUPPORTS_ROOT_NS = True
 
     def __init__(
         self, id, client_id, client_secret, sandbox=False, *args, **kwargs
@@ -311,14 +309,17 @@ class OpusDNSProvider(BaseProvider):
             record_name = record['name']
             record_type = record['type']
 
-            if not record_type in self.SUPPORTS:
-                # Don't log this warning for APEX DNSKEY, DS and SOA records.
-                # SOA records aren't supported by OctoDNS. APEX DNSKEY and DS
-                # records are managed by OpusDNS and can't be updated/removed on
-                # DNSSEC-signed zones.
-                if record_name == '' and record_type in ('DNSKEY', 'DS', 'SOA'):
-                    continue
+            # Skip apex DNSKEY, DS, NS and SOA records as they are protected
+            # and therefore cannot be updated.
+            if record_name == '' and record_type in (
+                'DNSKEY',
+                'DS',
+                'NS',
+                'SOA',
+            ):
+                continue
 
+            if not record_type in self.SUPPORTS:
                 self.log.warning(
                     'populate: skipping unsupported %s record', record_type
                 )

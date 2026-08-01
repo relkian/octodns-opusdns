@@ -250,8 +250,20 @@ class TestOpusDNSProvider(TestCase):
                 'ttl': 3600,
                 'value': '256 3 5 AwEAAfNNMrML2opUMF4ImMpy8fr90YCb/czyb3ASxMys1'
                 'FlbbQRSlQ5v1+9IC2R26Ow0ymHlFBugsrtEdFAqO/wkUgRxDrb3GzhUWvZBL0h'
-                'MsykM QIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQd'
-                'LfgrWIat',
+                'MsykMQIJlsm6DXzTxDwhxetUhsjZa6EnQvGSMExei4PLc6+Jrz8rqVtS+rLQdL'
+                'fgrWIat',
+            },
+            {
+                'name': 'subzone',
+                'ttl': 3600,
+                'type': 'NS',
+                'value': 'ns1.sandbox.opusdns.com.',
+            },
+            {
+                'name': 'subzone',
+                'ttl': 3600,
+                'type': 'NS',
+                'value': 'ns2.sandbox.opusdns.com.',
             },
             {
                 'name': 'www',
@@ -323,7 +335,6 @@ class TestOpusDNSProvider(TestCase):
         self.assertEqual(9, len(zone.records))
         # No diffs == no changes.
         changes = self.expected.changes(zone, provider)
-        print(repr(changes))
         self.assertEqual(0, len(changes))
 
         # Unsupported record type must be skipped.
@@ -393,26 +404,6 @@ class TestOpusDNSProvider(TestCase):
                                     ],
                                     'ttl': 3600,
                                     'type': 'ALIAS',
-                                },
-                            }
-                        ]
-                    },
-                ),
-                call(
-                    'PATCH',
-                    '/dns/unit.tests./rrsets',
-                    json={
-                        'ops': [
-                            {
-                                'op': 'upsert',
-                                'rrset': {
-                                    'name': '',
-                                    'records': [
-                                        {'rdata': 'ns1.sandbox.opusdns.com.'},
-                                        {'rdata': 'ns2.sandbox.opusdns.com.'},
-                                    ],
-                                    'ttl': 3600,
-                                    'type': 'NS',
                                 },
                             }
                         ]
@@ -544,6 +535,26 @@ class TestOpusDNSProvider(TestCase):
                                     ],
                                     'ttl': 3600,
                                     'type': 'TXT',
+                                },
+                            }
+                        ]
+                    },
+                ),
+                call(
+                    'PATCH',
+                    '/dns/unit.tests./rrsets',
+                    json={
+                        'ops': [
+                            {
+                                'op': 'upsert',
+                                'rrset': {
+                                    'name': 'subzone',
+                                    'records': [
+                                        {'rdata': 'ns1.sandbox.opusdns.com.'},
+                                        {'rdata': 'ns2.sandbox.opusdns.com.'},
+                                    ],
+                                    'ttl': 3600,
+                                    'type': 'NS',
                                 },
                             }
                         ]
