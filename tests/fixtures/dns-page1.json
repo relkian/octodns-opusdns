@@ -188,6 +188,25 @@
           ]
         },
         {
+          "name": "subzone.unit.tests.",
+          "type": "NS",
+          "ttl": 3600,
+          "protected": false,
+          "protected_reason": null,
+          "records": [
+            {
+              "rdata": "ns1.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            },
+            {
+              "rdata": "ns2.sandbox.opusdns.com.",
+              "protected": false,
+              "protected_reason": null
+            }
+          ]
+        },
+        {
           "name": "www.unit.tests.",
           "type": "CNAME",
           "ttl": 3600,
