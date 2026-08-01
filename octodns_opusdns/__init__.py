@@ -321,7 +321,9 @@ class OpusDNSProvider(BaseProvider):
 
         # Record.from_rrsets() converts Rrset() objects to octoDNS records
         # (ARecord, AaaaRecord...), parsing RFC-formated records values.
-        for record in Record.from_rrsets(zone, rrsets, lenient=lenient):
+        for record in Record.from_rrsets(
+            zone, rrsets, lenient=lenient, source=self
+        ):
             zone.add_record(record, lenient=lenient)
 
         self.log.info(
