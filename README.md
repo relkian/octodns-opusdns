@@ -19,7 +19,7 @@ Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
 
 ```
 # Start with the latest versions and don't just copy what's here
-octodns==1.21.0
+octodns==1.22.0
 octodns-opusdns==1.1.0
 ```
 
@@ -53,9 +53,6 @@ records.
 
 It does not supports `CERT`, `DNSKEY`, `SOA` and `SMIMEA` records as octoDNS
 doesn't handle them.
-
-> [!IMPORTANT]
-> `URI` records support requires octoDNS >= `1.17.0`.
 
 > [!NOTE]
 > Currently, the creation and editing of `HTTPS`, `NAPTR`, `SSHFP`,
