@@ -1,3 +1,11 @@
+## v1.2.0 - 2026-09-10 - New RDATA API
+
+* Fix missing Requests dependency
+* Switch to octoDNS’s new RDATA API, which fixes broken creation and parsing of
+CAA/TXT records
+* OpusDNS no longer supports custom NS records at zone apex. They are now
+discarded when syncing zones
+
 ## v1.1.0 - 2026-07-27 - No more warnings on DNSSEC signed zones
 
 * No longer log a warning for unsupported DNSKEY and DS records located at zone

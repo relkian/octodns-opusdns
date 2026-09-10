@@ -20,15 +20,15 @@ Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
 ```
 # Start with the latest versions and don't just copy what's here
 octodns==1.22.0
-octodns-opusdns==1.1.0
+octodns-opusdns==1.2.0
 ```
 
 ##### SHAs
 
 ```
 # Start with the latest/specific versions and don't just copy what's here
--e git+https://git@github.com/octodns/octodns.git@5d2a85e43953d5a02e9b67e83f30e2bd9c7ef441#egg=octodns
--e git+https://git@github.com/octodns/octodns-opusdns.git@2952eec544460d8af0e0f4a8a16f7baf36be87ea#egg=octodns_opusdns
+octodns @ git+https://git@github.com/octodns/octodns.git@c35a57c11ce12348960ec20316507eb9b2badb72
+octodns-opusdns @ git+https://git@github.com/relkian/octodns-opusdns.git@31d465fd7cd277797eaef19a063f8059ce30dbb7
 ```
 
 ### Configuration
